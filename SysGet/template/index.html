@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probado Django</title>
+</head>
+<body>
+    {% block header %}
+    {% include 'base/header.html' %}
+    {% endblock header %}
+    <h1>Hola desde DJANGO!!!!!</h1>
+    <a href="{% url 'inicio' %}">inicio</a>
+    {% for us in allUser %}
+    <p>{{ us.nombre }}</p>
+    {% endfor %}
+    {% block footer %}
+    {% include 'base/footer.html' %}
+    {% endblock footer %}
+</body>
+</html>
