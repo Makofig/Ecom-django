@@ -9,8 +9,15 @@
     {% block header %}
     {% include 'base/header.html' %}
     {% endblock header %}
-    <h1>Hola desde DJANGO!!!!!</h1>
-    <a href="{% url 'inicio' %}">inicio</a>
+    {% if user.is_authenticated %}
+        <h1>Hola, {{user}}!!!</h1>
+        <form action="{% url 'logout'%}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Cerrar Sesión</button>
+        </form>
+    {% else %}
+        <a href="{% url 'inicio' %}">inicio</a>
+    {% endif %}
     {% for us in allUser %}
     <p>{{ us.nombre }}</p>
     {% endfor %}
