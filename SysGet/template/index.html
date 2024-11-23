@@ -1,28 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Probado Django</title>
-</head>
-<body>
-    {% block header %}
-    {% include 'base/header.html' %}
-    {% endblock header %}
+{% extends 'base/base.html'%}
+
+{% block container %}
     {% if user.is_authenticated %}
         <h1>Hola, {{user}}!!!</h1>
-        <form action="{% url 'logout'%}" method="POST">
-            {% csrf_token %}
-            <button type="submit">Cerrar Sesión</button>
-        </form>
+        <p>Nombre de Usuario: {{usuario.username}}</p>
+        <p>Email: {{usuario.email}}</p>
+        
+        <a href="{% url 'usuario:dashboard' %}">Dashboard</a>
+        <a href="{% url 'usuario:info' %}">Información</a>
     {% else %}
         <a href="{% url 'inicio' %}">inicio</a>
     {% endif %}
-    {% for us in allUser %}
-    <p>{{ us.nombre }}</p>
-    {% endfor %}
-    {% block footer %}
-    {% include 'base/footer.html' %}
-    {% endblock footer %}
-</body>
-</html>
+{% endblock container %}

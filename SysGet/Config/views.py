@@ -1,16 +1,19 @@
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+@login_required # Permite proteger la vista 
 def inicio(request):
-    lista_usuarios = [
-        {"nombre": "Marcos", "apellido": "Aquino"},
-        {"nombre": "Mario", "apellido": "Aquino"},
-        {"nombre": "Lujan", "apellido": "Aquino"},
-    ] 
+    usuario_actual = {
+        "nombre": request.user.first_name, 
+        "username": request.user.username, 
+        "email": request.user.email 
+    } 
     contex = {
-        "allUser": lista_usuarios
+        "usuario": usuario_actual
     }
+    print(request.user); 
     return render(request, 'index.html', contex)
 
 def loginUser(request):
@@ -44,3 +47,17 @@ def loginUser(request):
             return render(request, 'base/login.html', contexto)
         
     return render(request, 'base/login.html', {})
+
+def registerUser(request): 
+
+    if request.method == "POST": 
+
+        username = request.POST.get("username", default = None);
+        firstname = request.POST.get("firstname", default = None);  
+        lastname = request.POST.get("lastname", default = None);
+        email = request.POST.get("email", default = None);
+        password = request.POST.get("password", default = None); 
+
+        print (username, firstname, lastname, email, password); 
+
+    return render(request, 'base/register.html', {});

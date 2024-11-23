@@ -1,20 +1,36 @@
+import environ
+import os
 from pathlib import Path
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(); 
+env_file = os.path.join(os.path.dirname(BASE_DIR), ".env"); 
+
+env.read_env(env_file=env_file, overrides=True); 
+
+SECRET_KEY_DEFAULT = 'django-insecure-@wt@kd!yhtlsu=#lx38e4-pz+*&o-$3mz+=8wwtwv6o=l#7n#!'
+
+SECRET_KEY = env("SECRET_KEY", default=SECRET_KEY_DEFAULT); 
+
+DEBUG = env.bool("DJANGO_DEBUG", default=True); 
+
+ENVIRONMENT_RUN = env("ENVIRONMENT_RUN", default="local"); 
+
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=['*']); 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@wt@kd!yhtlsu=#lx38e4-pz+*&o-$3mz+=8wwtwv6o=l#7n#!'
+# SECRET_KEY = 'django-insecure-@wt@kd!yhtlsu=#lx38e4-pz+*&o-$3mz+=8wwtwv6o=l#7n#!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -68,21 +84,40 @@ WSGI_APPLICATION = 'Config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+DEFAULT_DB_NAME = env("POSTGRES_DB")
+DEFAULT_DB_USER = env("POSTGRES_USER")
+DEFAULT_DB_HOST = env("POSTGRES_HOST")
+DEFAULT_DB_PORT = env("POSTGRES_PORT")
+
 DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": DEFAULT_DB_NAME,
+        "USER": DEFAULT_DB_USER,
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": DEFAULT_DB_HOST,
+        "PORT": DEFAULT_DB_PORT, 
+        "ATOMIC_REQUESTS": True,
+        "CONN_MAX_AGE": env.int("CONN_MAX_AGE", default=60)
+    }
+}
+
+
+# DATABASES = {
     #'default': {
     #    'ENGINE': 'django.db.backends.sqlite3',
     #    'NAME': BASE_DIR / 'db.sqlite3',
     #}
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "djangodb",
-        "USER": "postgres",
-        "PASSWORD": "admin123456",
-        "HOST": "localhost",
-        "PORT": "5433", 
-    }
+    #"default": {
+        #"ENGINE": "django.db.backends.postgresql",
+        #"NAME": "djangodb",
+        #"USER": "postgres",
+        #"PASSWORD": "admin123456",
+        #"HOST": "localhost",
+        #"PORT": "5433", 
+    #}
 
-}
+#}
 
 
 # Password validation
@@ -107,7 +142,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-Ar'
 
 TIME_ZONE = 'UTC'
 
