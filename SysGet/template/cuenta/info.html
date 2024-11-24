@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+{% block container %}
+
+{% if cuenta %}
+    <!-- Información de la cuenta -->
+    <ul role="list" class="divide-y divide-gray-100">
+        <li class="flex justify-between gap-x-6 py-5">
+            <div class="flex min-w-0 gap-x-4">
+                <img class="size-12 flex-none rounded-full bg-gray-50" src="{{ cuenta.usuario.photo.url }}" alt="Imagen de usuario">
+                <div class="min-w-0 flex-auto">
+                    <p class="text-sm/6 font-semibold text-gray-900">Alias: {{ cuenta.alias }}</p>
+                    <p class="text-sm/6 font-semibold text-gray-900">Username: {{ usuario.username }}</p>
+                    <p class="text-sm/6 font-semibold text-gray-900">Nombre: {{ usuario.first_name }}</p>
+                    <p class="text-sm/6 font-semibold text-gray-900">Apellido: {{ usuario.last_name }}</p>
+                    <p class="text-sm/6 font-semibold text-gray-900">Email: {{ usuario.email }}</p>
+                    <p class="mt-1 truncate text-xs/5 text-gray-500">Saldo: {{ cuenta.monto }}</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+    
+    <!-- Botón para cargar saldo -->
+    <a href="{% url 'usuario:editarCuenta' cuenta.id %}" 
+        class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">
+        Cargar Saldo
+    </a>
+
+{% else %}
+    <!-- Botón para crear cuenta -->
+    <a href="{% url 'usuario:crearCuenta' %}" 
+       class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+        <span>Crear Cuenta</span>
+    </a>
+{% endif %}
+
+
+{% endblock container %}
+

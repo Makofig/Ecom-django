@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+
+{% block container %}
+
+    <form method="POST">
+        {% csrf_token %}
+      
+        <div class="sm:col-span-3">
+            <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Alias: {{cuenta.alias}}</label>
+            <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Monto: {{cuenta.monto}}</label>
+            <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Username: {{cuenta.usuario.username}}</label>
+            <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Email: {{cuenta.usuario.email}}</label>
+        </div>
+        <div class="mt-6 flex justify-end gap-x-4">
+            <button type="submit"
+                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Confirmar eliminación
+            </button>
+            <a href="{% url 'usuario:listarCuenta' %}" 
+                class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-400">
+                Cancelar
+            </a>
+        </div>
+        
+    </form> 
+    
+{% endblock container %}

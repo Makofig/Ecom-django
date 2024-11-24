@@ -3,18 +3,20 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+from django.contrib.auth.hashers import make_password
+from apps.usuarios.models import Usuario
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
+
 @login_required # Permite proteger la vista 
 def inicio(request):
-    usuario_actual = {
-        "nombre": request.user.first_name, 
-        "username": request.user.username, 
-        "email": request.user.email 
-    } 
+    usuario = request.user
     contex = {
-        "usuario": usuario_actual
+        "usuario": usuario
     }
     print(request.user); 
-    return render(request, 'index.html', contex)
+    return render(request, 'dashboard.html', contex)
 
 def loginUser(request):
 
@@ -51,13 +53,32 @@ def loginUser(request):
 def registerUser(request): 
 
     if request.method == "POST": 
+        username = request.POST.get("username", default=None)
+        firstname = request.POST.get("firstname", default=None)
+        lastname = request.POST.get("lastname", default=None)
+        email = request.POST.get("email", default=None)
+        password = request.POST.get("password", default=None)
+        is_active = request.POST.get("is_active", default=True)
 
-        username = request.POST.get("username", default = None);
-        firstname = request.POST.get("firstname", default = None);  
-        lastname = request.POST.get("lastname", default = None);
-        email = request.POST.get("email", default = None);
-        password = request.POST.get("password", default = None); 
+        if username and email and password:
+            # Crear y guardar el usuario con la contraseña encriptada
+            try:
+                user = Usuario(
+                    username=username,
+                    first_name=firstname,
+                    last_name=lastname,
+                    email=email,
+                    password=make_password(password),  # Encriptar la contraseña
+                    is_active = is_active,
+                    
+                )
+                user.save()
+                return render(request, 'base/login.html', {'user': user})
+            except Exception as e:
+                print(f"Error al crear el usuario: {e}")
+                return render(request, 'base/register.html', {'error': 'Error al registrar el usuario'})
+        else:
+            return render(request, 'base/register.html', {'error': 'Todos los campos son obligatorios'})
 
-        print (username, firstname, lastname, email, password); 
+    return render(request, 'base/register.html', {})
 
-    return render(request, 'base/register.html', {});

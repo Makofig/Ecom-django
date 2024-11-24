@@ -1,0 +1,27 @@
+{% extends 'base/base.html'%}
+
+{% block container %}
+
+<ul role="list" class="divide-y divide-gray-100">
+    {% for user in usuarios %}
+    <li class="flex justify-between gap-x-6 py-5">
+        <div class="flex min-w-0 gap-x-4">
+            <img class="size-12 flex-none rounded-full bg-gray-50" src="{% if user.photo %}{{ user.photo.url }}{% else %}/media/perfiles/user.png{% endif %}"   alt="Avatar">
+            <div class="min-w-0 flex-auto">
+            <p class="text-sm/6 font-semibold text-gray-900">{{user.username|default:"No hay usuario"}}</p>
+            <p class="mt-1 truncate text-xs/5 text-gray-500"> {{ user.email|default:user.first_name|default:"unknown"|add:"."|add:user.last_name|default:"user"|add:"@example.com" }}</p>
+            </div>
+        </div>
+        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+            <a class="text-sm/6 text-gray-900" href="{% url 'usuario:editar' user.id %}">Editar</a>
+            <a class="text-sm/6 text-gray-900" href="{% url 'usuario:delete' user.id %}">Eliminar</a>
+            <a class="mt-1 text-xs/5 text-gray-900" href="{% url 'usuario:detalle' user.id %}" >Detalle</a>
+        </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+  {% include 'includes/pagination.html' %}
+  
+
+{% endblock container %}

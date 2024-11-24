@@ -1,0 +1,20 @@
+{% if page_obj.has_previous %}
+    <li>
+        <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+    </li>
+{% endif %}
+
+{% for pagina in paginator.page_range %}
+    <li class="{% if page_obj.number == pagina %} active {% endif %}">
+        <a href="?page={{ pagina }}" 
+           class="px-3 py-1 rounded {% if page_obj.number == pagina %} bg-blue-500 text-white {% else %} bg-gray-200 hover:bg-gray-300 {% endif %}">
+            {{ pagina }}
+        </a>
+    </li>
+{% endfor %}
+
+{% if page_obj.has_next %}
+    <li>
+        <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+    </li>
+{% endif %}

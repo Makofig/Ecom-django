@@ -1,0 +1,27 @@
+{% extends 'base/base.html'%}
+
+{% block container %}
+
+<ul role="list" class="divide-y divide-gray-100">
+    {% for cuenta in cuentas %}
+    <li class="flex justify-between gap-x-6 py-5">
+        <div class="flex min-w-0 gap-x-4">
+            <img class="size-12 flex-none rounded-full bg-gray-50" src="{% if cuenta.usuario.photo %}{{ cuenta.usuario.photo.url }}{% else %}/media/perfiles/user.png{% endif %}"   alt="Avatar">
+            <div class="min-w-0 flex-auto">
+            <p class="text-sm/6 font-semibold text-gray-900">{{cuenta.alias|default:"No hay cuenta"}}</p>
+            <p class="text-sm/6 font-semibold text-gray-900">{{cuenta.usuario.first_name|default:"None"}}</p>
+            <p class="text-sm/6 font-semibold text-gray-900">{{cuenta.usuario.last_name|default:"None"}}</p>
+            <p class="mt-1 truncate text-xs/5 text-gray-500"> {{ cuenta.monto }}</p>
+            </div>
+        </div>
+        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+            <a class="text-sm/6 text-gray-900" href="{% url 'usuario:deleteCuenta' cuenta.id %}">Eliminar</a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+  {% include 'includes/pagination.html' %}
+  
+
+{% endblock container %}

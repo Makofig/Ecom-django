@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+
+{% block container %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %} 
+    {% include 'includes/form_errores.html' %}
+    
+    {{form.as_p}}
+    <!--
+    <div class="sm:col-span-2">
+        <label for="monto" class="block text-sm/6 font-medium text-gray-900">{{form.monto.label}}</label>
+        <div class="mt-2">
+            <div
+                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                <span
+                    class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">1,000.00/</span>
+                    {{form.monto}}
+            </div>
+        </div>
+    </div>
+    -->
+    <button type="submit">Enviar</button>
+</form>
+{% endblock container %}

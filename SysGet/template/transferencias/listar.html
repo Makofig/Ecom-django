@@ -1,0 +1,64 @@
+{% extends 'base/base.html' %}
+
+{% block container %}
+
+<a href="{% url 'usuario:realizarTransferencia' %}" 
+    class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">
+    Realizar Transferencias
+</a>
+{% if cuenta %}
+    
+
+    <div class="relative overflow-x-auto py-3">
+        <h2>Transferencias para la cuenta: <strong>{{ cuenta.alias }}</strong></h2>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Transferencia
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Monto
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Fecha
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Motivo
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transferencia in transferencias %}
+                    <tr class="bg-white border-b  ">
+                        {% if transferencia.cuenta_origen == cuenta %}
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                <strong>Realizada</strong> Destino: {{ transferencia.cuenta_destino.alias }}
+                            </th>
+                        
+                        {% else %} 
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                <strong>Recibida</strong> Origen: {{ transferencia.cuenta_origen.alias }}
+                            </th>
+                            
+                        {% endif %}
+                        <td class="px-6 py-4">
+                            $ {{ transferencia.monto }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ transferencia.fecha_transferencia|date:"Y-m-d H:i" }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ transferencia.motivo }}
+                        </td>
+                    </tr>
+                {% endfor %}    
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    <p>No tienes una cuenta asociada o no hay transferencias registradas.</p>
+{% endif %}
+
+{% endblock container %}
