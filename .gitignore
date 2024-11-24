@@ -1,1 +1,3 @@
 SysGet/db.sqlite3
+.env
+.pyc
