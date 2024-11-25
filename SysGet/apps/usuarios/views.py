@@ -38,14 +38,6 @@ class CrearUser(CreateView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if 'form_cuenta' not in context:
-            context['form_cuenta'] = self.second_form_class()
-        context['titulo'] = "Nuevo Usuario"
-        context['usuario'] = self.request.user
-        return context
-
     def post(self, request, *args, **kwargs):
         # Procesar ambos formularios en el método POST
         form_user = self.form_class(request.POST, request.FILES)
@@ -55,6 +47,14 @@ class CrearUser(CreateView):
             return self.form_valid(form_user, form_cuenta)
         else:
             return self.form_invalid(form_user, form_cuenta)
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if 'form_cuenta' not in context:
+            context['form_cuenta'] = self.second_form_class()
+        context['titulo'] = "Nuevo Usuario"
+        context['usuario'] = self.request.user
+        return context
         
     def form_valid(self, form_user, form_cuenta):
         usuario = form_user.save(commit=False)
